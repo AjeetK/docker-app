@@ -64,7 +64,7 @@ def add_image():
         info = imagename + " will be added if it exists"
     else:
         pass
-    return redirect(url_for('.display_image_list', message=info))
+    return redirect(url_for('.display_images', message=info))
 
 @home_view.route('/containerlogs/<string:id>')
 def display_logs(id):
