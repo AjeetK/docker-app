@@ -1,0 +1,72 @@
+<html>
+<head>
+	<!-- CSS -->
+	<link rel="stylesheet" href="/static/css/normalize.css">
+	<link rel="stylesheet" href="/static/css/skeleton.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="column two">
+			</div> <!-- End of column two -->
+			<h1 align="center">List of Images</h1>
+			<div class="row">
+				<form method="post" action="/addimage">
+				    <input type="text" name="imagename" placeholder="imagename">
+				    <!-- <input type="password" name="pass" placeholder="Password"> -->
+				    <input class="button-primary" id="imagenamebtn" type="submit" value="Add Image" name="ok"/>
+				</form>
+				{% if message %}
+			    	<code class="">{{message}}</code>
+			  	{% endif %}
+			</div>
+			<table class="u-full-width">
+				<thead>
+					<tr><th>Image ID</th><th>Tags</th><th>Command</th><th>Expose/Ports</th></tr>
+				</thead>
+				<tbody>
+					{% for images in data %}
+						<tr>
+							<td><a href='/image/{{images["id"]}}'> {{images['id']}}</td>
+							<td> 
+							{% for tag in images['tags'] %}
+								<ul>
+									<li>{{tag}}</li>
+								</ul>
+							{% endfor %}
+							</td>
+
+                                <form method="post" action='/runcontainer/{{images["id"]}}'>
+                                    <td><input type="text" name="command" placeholder="eg: /sh"></td>
+                                    <td><input type="text" name="port" placeholder="ex: 80:80,8080:8080"></td>
+                                    <td><input class="button-primary" type="submit" value="RUN"></td>
+
+                                </form>
+
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<div class="column two">
+			</div> <!-- End of column two -->
+		</div> <!-- End of row -->
+	</div> <!-- End of container -->
+</body>
+$(function() {
+    $('#imagenamebtn').click(function() {
+        $.ajax({
+            url: '/addimage',
+            data: $('form').serialize(),
+            type: 'POST',
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    });
+});
+</script>
+</html>

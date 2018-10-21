@@ -1,0 +1,39 @@
+<html>
+<head>
+	<!-- CSS -->
+	<link rel="stylesheet" href="/static/css/normalize.css">
+	<link rel="stylesheet" href="/static/css/skeleton.css">
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="column two">
+			</div> <!-- End of column two -->
+			<h1 align="center">List of Containers</h1>
+			<table class="u-full-width">
+				<thead>
+					<tr><th>Container ID</th><th>Name</th><th>Status</th><th>Created At</th><th>Logs</th><th>Action</th></tr>
+				</thead>
+				<tbody>
+					{% for container in data %}
+						<tr>
+							<td><a href='/container/{{container["id"]}}'> {{container['id']}}</td>
+							<td>{{container['name']}}</td>
+							<td>{{container['status']}}</td>
+							<td>{{container['createdAt']}}</td>
+                            <td><a href='/containerlogs/{{container["id"]}}' class="button">Logs</a></td>
+							<td>
+							{% if container['status'] == "running"%}
+								<a href='/stopcontainer/{{container["id"]}}' class="button">Stop</a>
+							{% endif %}
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<div class="column two">
+			</div> <!-- End of column two -->
+		</div> <!-- End of row -->
+	</div> <!-- End of container -->
+</body>
+</html>

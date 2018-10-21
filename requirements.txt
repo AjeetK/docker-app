@@ -1,0 +1,4 @@
+flask
+Flask-Testing
+nose
+docker

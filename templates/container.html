@@ -1,0 +1,74 @@
+<html>
+<head>
+	<!-- CSS -->
+	<link rel="stylesheet" href="/static/css/normalize.css">
+	<link rel="stylesheet" href="/static/css/skeleton.css">
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="column two">
+			</div> <!-- End of column two -->
+			<h1 align="center">Container Details</h1>
+			<div class="column eight">
+				<table class="u-full-width">
+					<tbody>
+						<tr>
+							<td>Name</td>
+							<td>{{data['name']}}</td>
+						</tr>
+                        <tr>
+							<td>ID</td>
+							<td>{{data['id']}}</td>
+						</tr>
+						<tr>
+							<td>Image</td>
+							<td>{{data['image']}}</td>
+						</tr>
+						<tr>
+							<td>Craeted At</td>
+							<td>{{data['created']}}</td>
+						</tr>
+                        <tr>
+							<td>Current Status</td>
+							<td>{{data['status']}}</td>
+						</tr>
+                        <tr>
+							<td>Restart Count</td>
+							<td>{{data['restart_count']}}</td>
+						</tr>
+                        <tr>
+							<td>Command</td>
+							<td>{{data['command']}}</td>
+						</tr>
+                        <tr>
+							<td>EntryPoint</td>
+							<td>{{data['entrypoint']}}</td>
+						</tr>
+						<tr>
+							<td>Volumes</td>
+							<td>{{data['volumes']}}</td>
+						</tr>
+                        <tr>
+							<td>Ports</td>
+							{% for port in data['ports']%}
+								<td>
+								<ul>
+									<li>{{port}}</li>
+								</ul>
+								</td>
+							{% endfor %}
+						</tr>
+                        <tr>
+							<td>Logs</td>
+							<td><a class="button button-primary" href="/containerlogs/{{ data['id'] }}">Logs</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div> <!-- End of column eight -->
+			<div class="column two">
+			</div> <!-- End of column two -->
+		</div> <!-- End of row -->
+	</div> <!-- End of container -->
+</body>
+</html>
