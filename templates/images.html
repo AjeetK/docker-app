@@ -53,20 +53,5 @@
 		</div> <!-- End of row -->
 	</div> <!-- End of container -->
 </body>
-$(function() {
-    $('#imagenamebtn').click(function() {
-        $.ajax({
-            url: '/addimage',
-            data: $('form').serialize(),
-            type: 'POST',
-            success: function(response) {
-                console.log(response);
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        });
-    });
-});
 </script>
 </html>
