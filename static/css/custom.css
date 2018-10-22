@@ -1,0 +1,12 @@
+/* Any custom CSS or override existing css*/
+pre > code {
+	whites-space: pre-line;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.button {
+    margin-right: 20px;
+}
