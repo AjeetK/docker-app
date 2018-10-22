@@ -7,12 +7,21 @@
 <body>
 	<div class="container">
 		<div class="row">
+			<br>
+			<br>
+			<div class="columns twelve text-center">
+				<a class="button button-primary" href="/">Home </a>
+				<a class="button button-primary" href="/containers">List all Images</a>
+				<a class="button button-primary" href="/containers">List all containers</a>
+			</div> <!-- End of columns two -->
+		</div>
+		<div class="row">
 			<div class="column two">
 			</div> <!-- End of column two -->
 			<h1 align="center">Oops, something went wrong!</h1>
 			<div class="column eight">
 				<table class="u-full-width">
-					<div><h3>{{ data['exception'] }}</h3></div>
+					<div><h3>{{data['exception']}}</h3></div>
 				</table>
 			</div> <!-- End of column eight -->
 			<div class="column two">

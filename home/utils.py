@@ -34,29 +34,41 @@ class DockerApp(object):
             }
         """
         data = [] # list of images to be returned
-        for image in self.client.images.list():
-            image_list = dict(id=image.short_id, tags=image.tags, author=image.attrs["Author"])
-            data.append(image_list)
-        return data
+        try:
+            for image in self.client.images.list():
+                image_list = dict(id=image.short_id, tags=image.tags, author=image.attrs["Author"])
+                data.append(image_list)
+            return data
+        except Exception as e:
+            data = {'exception': "Looks like docker daemon is not running on the server!"}
+            return data
 
     def get_image(self, id):
         """
         Accepts image-id as an argument
         Returns a dictionary having image information
         """
-        image = self.client.images.get(id)
-        data = image.attrs
-        return data
+        try:
+            image = self.client.images.get(id)
+            data = image.attrs
+            return data
+        except Exception as e:
+            data = {'exception': "Either docker daemon is not running or Image no more exist on the server"}
+            return data
 
     def get_containers(self):
         """Returns list of containers"""
         data = []
         # available - id, name, status, labels, image and more
-        for container in self.client.containers.list(all):
-            container_list = dict(id=container.short_id, name=container.name, 
-                        status=container.status, createdAt=container.attrs["Created"])
-            data.append(container_list)
-        return data
+        try:
+            for container in self.client.containers.list(all):
+                container_list = dict(id=container.short_id, name=container.name, 
+                            status=container.status, createdAt=container.attrs["Created"])
+                data.append(container_list)
+            return data
+        except Exception as e:
+            data = {'exception': "Looks like docker daemon is not running on the server!"}
+            return data
 
     def get_container(self, container_id):
         """
@@ -89,22 +101,30 @@ class DockerApp(object):
                 temp = i.split(":")
                 key = temp[0] + "/tcp"
                 port_dict[key] = temp[1]
-        result = self.client.containers.run(container_id, command, detach=True, ports=port_dict)
-        container_data = dict(name=result.name, image=result.attrs["Config"]["Image"],
-                              volumes=result.attrs["Config"]["Volumes"], command=result.attrs["Config"]["Cmd"][0],
-                              entrypoint=result.attrs["Config"]["Entrypoint"], created=result.attrs["Created"],
-                              status=result.status, ports=result.attrs["NetworkSettings"]["Ports"], id=result.short_id,
-                              restart_count=result.attrs["RestartCount"])
-        return container_data
+        try:
+            result = self.client.containers.run(container_id, command, detach=True, ports=port_dict)
+            container_data = dict(name=result.name, image=result.attrs["Config"]["Image"],
+                                  volumes=result.attrs["Config"]["Volumes"], command=result.attrs["Config"]["Cmd"][0],
+                                  entrypoint=result.attrs["Config"]["Entrypoint"], created=result.attrs["Created"],
+                                  status=result.status, ports=result.attrs["NetworkSettings"]["Ports"], id=result.short_id,
+                                  restart_count=result.attrs["RestartCount"])
+            return container_data
+        except Exception as e:
+            data = {'exception': "Either docker daemon is not running or Image no more exist on the server"}
+            return data
 
     def get_container_logs(self, id):
         """
         Accepts container-id as an argument
         Returns dictionary with 'logs' as key and the actual log content in value
         """
-        container = self.client.containers.get(id)
-        data = dict(logs=container.logs())
-        return data
+        try:
+            container = self.client.containers.get(id)
+            data = dict(logs=container.logs())
+            return data
+        except Exception as e:
+            container_data = {'exception': "Container Not Found!"}
+            return container_data
 
     def stop_container(self, container_id):
         try:

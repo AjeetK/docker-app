@@ -12,4 +12,4 @@ def create_app(config_file):
 
 if __name__ == '__main__':
     app = create_app('settingslocal.py')  # Create application with our config file
-    app.run(host='0.0.0.0', port=int(os.getenv('PORT_NUMBER', 5000)), debug=True, threaded=True)
+    app.run(host='0.0.0.0', port=int(os.getenv('PORT_NUMBER', 5000)), debug=False, threaded=True)
