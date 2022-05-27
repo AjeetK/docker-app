@@ -1,4 +1,4 @@
-version: "3.9"
+version: "2.3"
 
 services:
   docker-app:
@@ -11,8 +11,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
   
   dind:
-    #image: docker:dind
-    image: ajeetkhan/dind-ubuntu-20.04
+    image: ubuntu
     privileged: true
+    runtime: sysbox-runc
     volumes:
-      - ./apparmor:/etc/apparmor.d/containers/
+      - /home/ajeet/apparmor:/etc/apparmor.d/containers/
