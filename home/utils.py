@@ -17,7 +17,7 @@ class DockerApp(object):
 
     def __init__(self, DOCKER_HOST="localhost", DOCKER_TLS_VERIFY=None, DOCKER_CERT_PATH=None):
         super(DockerApp, self).__init__()
-        self.client = docker.from_env()
+        self.client = docker.from_env(timeout=180)
 
     def get_images(self):
         """ Returns list(dict) of images 
@@ -89,6 +89,7 @@ class DockerApp(object):
             container_data = {'exception': "Container Not Found!"}
             return container_data
 
+
     def run_container(self, container_id, command, port):
         """
         Accepts container-id, command to run and port to be exposed
@@ -102,7 +103,7 @@ class DockerApp(object):
                 key = temp[0] + "/tcp"
                 port_dict[key] = temp[1]
         try:
-            result = self.client.containers.run(container_id, command, detach=True, ports=port_dict)
+            result = self.client.containers.run(image = container_id,volumes={'/var/run/docker.sock':{'bind': '/var/run/docker.sock', 'mode': 'rw'}}, command = command, detach=True, ports=port_dict)
             container_data = dict(name=result.name, image=result.attrs["Config"]["Image"],
                                   volumes=result.attrs["Config"]["Volumes"], command=result.attrs["Config"]["Cmd"][0],
                                   entrypoint=result.attrs["Config"]["Entrypoint"], created=result.attrs["Created"],
@@ -112,6 +113,57 @@ class DockerApp(object):
         except Exception as e:
             data = {'exception': "Either docker daemon is not running or Image no more exist on the server"}
             return data
+
+    def show_dind(self):
+        """Returns list of containers"""
+        data = []
+        # available - id, name, status, labels, image and more
+        try:
+            for container in self.client.containers.list(all):
+                container_list = dict(id=container.short_id, name=container.name, 
+                            status=container.status, createdAt=container.attrs["Created"])
+                data.append(container_list)
+            return data
+        except Exception as e:
+            data = {'exception': "Looks like docker daemon is not running on the server!"}
+            return data
+
+    def run_dind(self, container_id, command):
+        """
+        Accepts image-id, command to run and port to be exposed
+        Returns information corresponding to image
+        """
+        # port_dict = {}
+        # if port:
+        #     port_list = port.split(',')
+        #     for i in port_list:
+        #         temp = i.split(":")
+        #         key = temp[0] + "/tcp"
+        #         port_dict[key] = temp[1]
+        try:
+            container = self.client.containers.get(container_id)
+            result = container.exec_run(cmd=command)
+            data = tuple(result)
+            return data
+        except Exception as e:
+            print(e)
+            data = {'exception': "Either docker daemon is not running or Image no more exist on the server"}
+            return data
+
+    def show_all_dind_container(self):
+        try:
+            for container in self.client.containers.list(all):
+                container_list = dict(id=container.short_id, name=container.name, 
+                            status=container.status, createdAt=container.attrs["Created"])
+                if "dind" in container_list["name"]:
+                    dind_container_id = container_list["id"]
+                    dind_container = self.client.containers.get(dind_container_id)
+                    data = dind_container.exec_run(cmd="docker ps -a")
+            return data
+        except Exception as e:
+            data = {'exception': "Looks like docker daemon is not running on the server!"}
+            return data
+
 
     def get_container_logs(self, id):
         """

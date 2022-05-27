@@ -3,6 +3,7 @@
 	<!-- CSS -->
 	<link rel="stylesheet" href="/static/css/normalize.css">
 	<link rel="stylesheet" href="/static/css/skeleton.css">
+	<link rel="stylesheet" href="static/css/custom.css">
 </head>
 <body>
 	<div class="container">
@@ -15,35 +16,17 @@
 				<a class="button button-primary" href="/dind">Run DinD (Docker in Docker)</a>
 				<a class="button button-primary" href="/showalldindcontainer">Show All DinD Container</a>
 			</div> <!-- End of columns two -->
-		</div>
+		</div> 
 		<div class="row">
 			<div class="column two">
 			</div> <!-- End of column two -->
-			<h1 align="center">Image Details</h1>
+			<h1 align="center">Container Details</h1>
 			<div class="column eight">
 				<table class="u-full-width">
 					<tbody>
 						<tr>
-							<td>Created</td> 
-							<td>{{data['Created']}}</td>
-						</tr>
-						<tr>
-							<td>Author</td>
-							<td>{{data['Author']}}</td>
-						</tr>
-						<tr>
-							<td>Size</td>
-							<td>{{data['Size']}}</td>
-						</tr>
-						<tr>
-							<td>Repo Tags</td>
-							{% for tag in data['RepoTags']%}
-								<td>
-								<ul>
-									<li>{{tag}}</li>
-								</ul>
-								</td>
-							{% endfor %}
+							<td>DinD Container Output</td>
+							<td>{{data}}</td>
 						</tr>
 					</tbody>
 				</table>

@@ -22,16 +22,19 @@
 			<h1 align="center">List of Containers</h1>
 			<table class="u-full-width">
 				<thead>
-					<tr><th>Container ID</th><th>Name</th><th>Status</th><th>Created At</th><th>Logs</th><th>Action</th></tr>
+					<tr><th>Container ID</th><th>Name</th><th>Status</th><th>Logs</th><th>Action</th></tr>
 				</thead>
 				<tbody>
 					{% for container in data %}
 						<tr>
+                            <form method="post" action="/dind/{{container['id']}}">
 							<td><a href='/container/{{container["id"]}}'> {{container['id']}}</td>
 							<td>{{container['name']}}</td>
 							<td>{{container['status']}}</td>
-							<td>{{container['createdAt']}}</td>
+                            <td><input type="text" name="dindcommand" placeholder="ex: docker run nginx"></td>
+                            <td><input class="button-primary" type="submit" value="RUN"></td>
                             <td><a href='/containerlogs/{{container["id"]}}' class="button">Logs</a></td>
+                            </form>
 							<td>
 							{% if container['status'] == "running"%}
 								<a href='/stopcontainer/{{container["id"]}}' class="button">Stop</a>

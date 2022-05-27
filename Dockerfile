@@ -1,4 +1,5 @@
-FROM python:2.7-slim
+#FROM python:2.7-slim
+FROM brunneis/python:2.7.16-ubuntu
 
 MAINTAINER "i.ajeetkhan@gmail.com"
 
