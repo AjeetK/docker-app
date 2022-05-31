@@ -38,10 +38,12 @@ Along with the flask app, it also runs another container called DinD container a
 	`docker-compose up -d`
 - Check running containers with following command:
 	`docker-compose ps`
+- You can put your engine into swarm mode with command:
+    `docker swarm init`
 - To deploy the stack on swarm:
 	`docker stack deploy --compose-file docker-compose.yml dinddemo`
 - Check the stack services:
-	`docker stack services stackdemo`
+	`docker stack services dinddemo`
 - Access the app on `IP:5000` or `localhost:5000`
 - To run a container inside another container, visit the URL - `http://<IP/localhost>:5000/dind/`
 - In the textbox present in front of `dind` image, run followign command to run a container
