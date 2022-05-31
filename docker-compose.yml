@@ -11,8 +11,12 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
   
   dind:
-    image: ubuntu
+    image: jpetazzo/dind
     privileged: true
-    runtime: sysbox-runc
     volumes:
-      - /home/ajeet/apparmor:/etc/apparmor.d/containers/
+      - /etc/apparmor.d:/etc/apparmor.d
+      - /sys/kernel/security:/sys/kernel/security
+    ports:
+      - "1234"
+    environment:
+      - PORT=1234
