@@ -13,6 +13,8 @@ services:
   dind:
     image: jpetazzo/dind
     privileged: true
+    security_opt:
+      - apparmor:custom-profile
     volumes:
       - /etc/apparmor.d:/etc/apparmor.d
       - /sys/kernel/security:/sys/kernel/security
@@ -20,3 +22,4 @@ services:
       - "1234"
     environment:
       - PORT=1234
+    

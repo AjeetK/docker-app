@@ -1,6 +1,3 @@
-#include <tunables/global>
-
-profile custom-profile {
-  #include <abstractions/base>
-
+profile custom flags=(complain) {
+  
 }
