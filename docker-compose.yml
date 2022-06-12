@@ -1,4 +1,4 @@
-version: "2.3"
+version: "3.7"
 
 services:
   docker-app:
@@ -8,17 +8,19 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+            - /var/run/docker.sock:/var/run/docker.sock:rw
   
   dind:
     image: jpetazzo/dind
     privileged: true
-    security_opt:
-      - apparmor:custom-profile
     volumes:
-      - /etc/apparmor.d:/etc/apparmor.d
-      - /sys/kernel/security:/sys/kernel/security
+      - /etc/apparmor.d:/etc/apparmor.d:rw
+      - /sys/kernel/security:/sys/kernel/security:rw
     ports:
       - "1234"
     environment:
       - PORT=1234
+    cap_add:
+      - ALL
+    command: >      
+        /bin/bash -c "cd /usr/local/bin/ && nohup wrapdocker & `docker run -t --security-opt 'apparmor=custom' -v /sys/kernel/security:/sys/kernel/security nginx`"
